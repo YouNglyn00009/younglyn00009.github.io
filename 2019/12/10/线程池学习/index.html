@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="lYnn">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="idea for mac常用快捷键"/>
+  <meta property="og:title" content="线程池学习"/>
   <meta property="og:description" content="My Blog" />
   <meta property="og:site_name" content="lYnn"/>
   <meta property="og:type" content="article" />
@@ -43,7 +43,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">idea for mac常用快捷键</p>
+          <p class="title">线程池学习</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -91,14 +91,14 @@
           
           <!-- Date -->
           <span class="date-time info">On
-            <span class="date">2019-12-09</span>
+            <span class="date">2019-12-10</span>
             <span class="time">17:36:20</span>
           </span>
           
           <!--  Categories  -->
             <span class="categories info">分类: 
 
-<a href="/categories/%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6/">常用软件</a>
+<a href="/categories/JAVA%E5%9F%BA%E7%A1%80/">JAVA基础</a>
 </span>
           
         </div>
@@ -107,31 +107,26 @@
           <div class="post-tags text-muted">
             标签: 
 
-<a class="tag" href="/tags/%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87/">效率提升</a>
+<a class="tag" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
 
 
           </div>
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <ul>
-<li>Command + O 查找类</li>
-<li>Command + Delete 删除行</li>
-<li>Command + B 方法/类引用<a id="more"></a></li>
-<li>Command + Option + B 接口引用，直接进入实现</li>
-<li>Command + Option + 向左/向右 回到光标之前/之后的点</li>
-<li>Command + Option + L 格式化代码</li>
-<li>Command + Shift + Enter 自动结束代码，行末自动添加分号</li>
-<li>Command + P 显示方法参数</li>
-<li>Command + Option + T 包围代码</li>
-<li>Command + W 关闭当前选项卡</li>
-<li>Command + N 快速生成代码（getter，setter，构造方法，toString）</li>
-<li>Command + L 按行号查找+ </li>
-<li>Control + O 重写父类方法</li>
-<li>Control + I 实现接口方法</li>
-<li>Control + Command + F 最大化窗口</li>
-<li>Shift + Command + 上下方向键 上下移动代码快</li>
-</ul>
+          <p>##一、为什么要使用线程池</p>
+<p>使用new Thread()创建线程，存在如下弊端：</p>
+<ol>
+<li>没new一个线程，会消耗大量资源，性能很差</li>
+<li>线程缺乏统一管理，若无限创建，会产生内存溢出等问题</li>
+<li>无法使用java提供的线程池的一些功能，如定时执行、定期执行、线程中断。</li>
+</ol>
+<p>而使用线程池的优势：</p>
+<ol>
+<li>可以重复使用空闲的线程，减少线程创建时的资源消耗</li>
+<li>可以统一管理线程，控制线程数量，避免出现阻塞和资源竞争的情况出现</li>
+<li>提供定时执行，定期执行，线程终端等功能</li>
+</ol>
 
         </div>
       </div>
