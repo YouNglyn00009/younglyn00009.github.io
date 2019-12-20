@@ -66,6 +66,22 @@
               </li>
             
               <li>
+                <a href="/categories">
+                  
+                  分类
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/tags">
+                  
+                  标签
+                  
+                </a>
+              </li>
+            
+              <li>
                 <a href="https://github.com/YouNglyn00009" target="_blank" rel="noopener">
                   
                   Github
@@ -92,7 +108,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-12-10</span>
-            <span class="time">21:20:10</span>
+            <span class="time">18:09:47</span>
           </span>
           
           <!--  Categories  -->
@@ -128,6 +144,22 @@
 <li>可以统一管理线程，控制线程数量，避免出现阻塞和资源竞争的情况出现</li>
 <li>提供定时执行，定期执行，线程终端等功能</li>
 </ol>
+<h2 id="二、线程池的执行过程"><a href="#二、线程池的执行过程" class="headerlink" title="二、线程池的执行过程"></a>二、线程池的执行过程</h2><p>先盗个图,这个图说明了线程池的每个参数做的事情，个人觉得很直接明了</p>
+<p><img src="/img/threads/%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86%E5%9B%BE.jpeg" alt="avatar"></p>
+<ol>
+<li><p>Executor.excute方法执行时发生的事情</p>
+<ul>
+<li>如果正在运行的线程数量小于 corePoolSize，那么马上创建线程运行这个任务</li>
+<li>如果正在运行的线程数量大于或等于 corePoolSize，那么将这个任务放入队列；</li>
+<li>如果这时候队列满了，而且正在运行的线程数量小于 maximumPoolSize，那么还是要创建线程运行这个任务；</li>
+<li>如果队列满了，而且正在运行的线程数量大于或等于 maximumPoolSize，那么线程池会抛出异常，告诉调用者“我不能再接受任务了”。</li>
+</ul>
+</li>
+<li><p>当一个线程完成任务时，它会从队列中取下一个任务来执行。</p>
+</li>
+<li><p>当一个线程无事可做，超过一定的时间（keepAliveTime）时，线程池会判断，如果当前运行的线程数大于 corePoolSize，那么这个线程就被停掉。所以线程池的所有任务完成后，它最终会收缩到 corePoolSize 的大小。</p>
+</li>
+</ol>
 <h2 id="二、创建线程池的四种方法"><a href="#二、创建线程池的四种方法" class="headerlink" title="二、创建线程池的四种方法"></a>二、创建线程池的四种方法</h2><ol>
 <li><p>ExecutorService executorService = Executors.newCachedThreadPool();</br><br>创建一个可缓存线程池，如果线程长度超过处理需要，可以灵活的回收空闲的线程，如果没有空闲的线程，才会新建线程，注意：该方法创建的是一个无限大的线程池。</p>
 </li>
@@ -138,7 +170,109 @@
 <li><p>ExecutorService executorService = Executors.newSingleThreadExecutor(); </br><br>该方法创建的线程池为单线程池，只有一个唯一的工作线程，用来保证所有的线程顺序执行</p>
 </li>
 </ol>
+<h2 id="三、自定义线程池ThreadPoolExecutor"><a href="#三、自定义线程池ThreadPoolExecutor" class="headerlink" title="三、自定义线程池ThreadPoolExecutor"></a>三、自定义线程池ThreadPoolExecutor</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>corePoolSize</td>
+<td>int</td>
+<td>核心池的大小，如果调用了prestartAllCoreThreads()或者prestartCoreThread()方法，会直接预先创建corePoolSize的线程，否则当有任务来之后，就会创建一个线程去执行任务，当线程池中的线程数目达到corePoolSize后，就会把到达的任务放到缓存队列当中；这样做的好处是，如果任务量很小，那么甚至就不需要缓存任务，corePoolSize的线程就可以应对</td>
+</tr>
+<tr>
+<td>maximumPoolSize</td>
+<td>int</td>
+<td>线程池最大线程数，表示在线程池中最多能创建多少个线程，如果运行中的线程超过了这个数字，那么相当于线程池已满，新来的任务会使用RejectedExecutionHandler 进行处理</td>
+</tr>
+<tr>
+<td>keepAliveTime</td>
+<td>long</td>
+<td>表示线程没有任务执行时最多保持多久时间会终止，然后线程池的数目维持在corePoolSize 大小</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>TimeUnit</td>
+<td>参数keepAliveTime的时间单位</td>
+</tr>
+<tr>
+<td>workQueue</td>
+<td>BlockingQueue<Runnable></td>
+<td>一个阻塞队列，用来存储等待执行的任务，如果当前对线程的需求超过了corePoolSize大小，才会放在这里</td>
+</tr>
+<tr>
+<td>threadFactory</td>
+<td>ThreadFactory</td>
+<td>线程工厂，主要用来创建线程，比如可以指定线程的名字</td>
+</tr>
+<tr>
+<td>handler</td>
+<td>RejectedExecutionHandler</td>
+<td>如果线程池已满，新的任务的处理方式</td>
+</tr>
+</tbody></table>
+<h2 id="四、线程池使用案例"><a href="#四、线程池使用案例" class="headerlink" title="四、线程池使用案例"></a>四、线程池使用案例</h2><ol>
+<li>快速的插入50W条数据</br><br>代码详情见<a href="https://github.com/YouNglyn00009/my-demo" target="_blank" rel="noopener">gitHub</a>,实际测试插入50W条数据用了6.98s</li>
+</ol>
+<pre><code>package com.lyn.demo.index.study.thread.impl;
 
+import com.lyn.demo.index.study.domain.User;
+import com.lyn.demo.index.study.service.UserService;
+import com.lyn.demo.index.study.thread.InsertUserBatch;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @Description
+ */
+@Service
+public class InsertUserBatchImpl implements InsertUserBatch {
+
+    @Resource
+    private UserService userService;
+
+    private ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(50,
+            50,
+            30L,
+            TimeUnit.SECONDS,
+            new LinkedBlockingQueue&lt;Runnable&gt;());
+
+    @Override
+    public void quickInsertUser() {
+        for (int i = 0; i &lt; 1000; i++) {
+            threadPoolExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    List&lt;User&gt; userList = new ArrayList&lt;&gt;();
+                    for (int j = 0; j &lt; 500; j++) {
+                        User user = new User();
+                        userList.add(user);
+                        user.setUserName(&quot;user_name&quot; + j);
+                        user.setSex(j % 2);
+                        user.setAge(20 + (j % 20));
+                    }
+                    userService.insertUserBatch(userList);
+                }
+            });
+        }
+        try {
+            Thread.sleep(10000L); //这里等线程执行完
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+</code></pre>
         </div>
       </div>
     </div>
