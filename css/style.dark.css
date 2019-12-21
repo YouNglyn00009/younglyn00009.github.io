@@ -26,9 +26,6 @@ body, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset,
   margin: 0;
   padding: 0;
 }
-h1, h2, h3, h4, h5, h6 {
-	font-weight: bold;
-}
 
 /* 重设 HTML5 标签, IE 需要在 js 中 createElement(TAG) */
 article, aside, details, figcaption, figure, footer, header, menu, nav, section {
@@ -252,6 +249,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 100;
   color: #000;
   line-height: 1.35;
+  font-weight: bold;
 }
 
 /* 标题应该更贴紧内容，并与其他块区分，margin 值要相应做优化 */
