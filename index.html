@@ -103,16 +103,22 @@
       </div>
     </div>
     <!-- Post Excerpt -->
-    <div class="excerpt typo"><h2 id="JVM内存区"><a href="#JVM内存区" class="headerlink" title="JVM内存区"></a>JVM内存区</h2><ul>
-<li>程序计数器: 只为java方法服务，执行native方法时，计数器为空</li>
-<li>方法区: 又叫非堆区，存放已加载的常量，静态变量等</li>
-<li>堆：内存中最大的一块，被所有线程共享，存放所有对象实例, 当堆内存空间不足，会抛出OOM异常</li>
-<li>栈：</li>
-<li>本地方法栈：指native方法</li>
+    <div class="excerpt typo"><h2 id="一、JVM运行时数据区"><a href="#一、JVM运行时数据区" class="headerlink" title="一、JVM运行时数据区"></a>一、JVM运行时数据区</h2><ol>
+<li><p>程序计数器: 简单的说，线程计数器就是为了记录每个线程执行到哪一行的一块非常小的区域，所以说每个线程都有一个程序计数器为线程服务。 如果线程执行java方法，则程序计数器存放的是java方法的指令地址；如果执行本地的native方法，程序计数器为空。 程序计数器不会出现OOM错误。</p>
+</li>
+<li><p>虚拟机栈: 线程私有的，虚拟机栈简称栈，是表示java方法执行的内存模型，每个java方法执行时都会创建一个栈帧，每个栈帧中存储了<strong>局部变量表</strong>、<strong>操作数栈</strong>、<strong>方法出口</strong>等信息，<strong>局部变量表在编译器就对其内存进行了分配</strong>。</p>
+<p>异常情况</p>
+<ul>
+<li>栈深度大于虚拟机允许的最大深度抛出StackOverflowError</li>
+<li>内存不足时抛出OutOfMemoryError</li>
 </ul>
-<ol>
-<li>线程独占： 栈，本地方法栈（native方法），程序计数器</li>
-<li>线程共享： 堆，方法区</li>
+</li>
+<li><p>本地方法栈: 与虚拟机栈类似，只是本地方法栈为本地方法服务。</p>
+</li>
+<li><p>方法区: 所有线程共享，存储已经被虚拟机加载的类信息、常量、静态变量等数据</p>
+</li>
+<li><p>堆: 所有线程共享，java内存中最大的一块区域，虚拟机启动时就被创建。堆内存中主要存放对象的实例和数据等信息。</p>
+</li>
 </ol></div>
     <!-- Post Tags -->
     <div class="tags">
