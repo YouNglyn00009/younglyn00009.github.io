@@ -172,15 +172,25 @@ mark {
 }
 
 /* 代码片断 */
-pre, code, pre tt {
+/*pre, code, pre tt {
   font-family: Courier, 'Courier New', monospace;
+}*/
+
+.gutter {
+  display: none;
+}
+
+.code {
+  border: none;
+  padding: 0;
 }
 
 pre {
+
   background: #f8f8f8;
   border: 1px solid #ddd;
   padding: 1em 1.5em;
-  display: block;
+  display: none;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -239,7 +249,7 @@ strong, b {
 }
 
 /* 保证块/段落之间的空白隔行 */
-.typo table, .typo p, .typo pre, .typo ul, .typo ol, .typo dl, .typo form, .typo hr,
+.typo table, .typo p, .typo ul, .typo ol, .typo dl, .typo form, .typo hr,
 .typo-p, .typo-pre, .typo-ul, .typo-ol, .typo-dl, .typo-form, .typo-hr, .typo-table, blockquote {
   margin-bottom: 1.2em
 }
@@ -397,18 +407,18 @@ table tbody tr:nth-child(2n) {
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #fbf1c7;
+  background: #eee;
 }
 .hljs,
 .hljs-subst {
-  color: #3c3836;
+  color: #000;
 }
 .hljs-deletion,
 .hljs-formula,
 .hljs-keyword,
 .hljs-link,
 .hljs-selector-tag {
-  color: #9d0006;
+  color: #000;
 }
 .hljs-built_in,
 .hljs-emphasis,
@@ -417,19 +427,19 @@ table tbody tr:nth-child(2n) {
 .hljs-strong,
 .hljs-title,
 .hljs-variable {
-  color: #076678;
+  color: #a8a8a2;
 }
 .hljs-attr,
 .hljs-params,
 .hljs-template-tag,
 .hljs-type {
-  color: #b57614;
+  color: #000;
 }
 .hljs-builtin-name,
 .hljs-doctag,
 .hljs-literal,
 .hljs-number {
-  color: #8f3f71;
+  color: #ae81ff;
 }
 .hljs-code,
 .hljs-meta,

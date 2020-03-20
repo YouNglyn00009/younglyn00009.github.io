@@ -172,15 +172,25 @@ mark {
 }
 
 /* 代码片断 */
-pre, code, pre tt {
+/*pre, code, pre tt {
   font-family: Courier, 'Courier New', monospace;
+}*/
+
+.gutter {
+  display: none;
+}
+
+.code {
+  border: none;
+  padding: 0;
 }
 
 pre {
+
   background: #f8f8f8;
   border: 1px solid #ddd;
   padding: 1em 1.5em;
-  display: block;
+  display: none;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -239,7 +249,7 @@ strong, b {
 }
 
 /* 保证块/段落之间的空白隔行 */
-.typo table, .typo p, .typo pre, .typo ul, .typo ol, .typo dl, .typo form, .typo hr,
+.typo table, .typo p, .typo ul, .typo ol, .typo dl, .typo form, .typo hr,
 .typo-p, .typo-pre, .typo-ul, .typo-ol, .typo-dl, .typo-form, .typo-hr, .typo-table, blockquote {
   margin-bottom: 1.2em
 }
@@ -397,12 +407,12 @@ table tbody tr:nth-child(2n) {
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #23241f;
+  background: #eee;
 }
 .hljs,
 .hljs-tag,
 .hljs-subst {
-  color: #f8f8f2;
+  color: #000;
 }
 .hljs-strong,
 .hljs-emphasis {
@@ -420,7 +430,7 @@ table tbody tr:nth-child(2n) {
 .hljs-title,
 .hljs-section,
 .hljs-selector-class {
-  color: #a6e22e;
+  color: #000;
 }
 .hljs-strong {
   font-weight: bold;
@@ -432,7 +442,7 @@ table tbody tr:nth-child(2n) {
 .hljs-selector-tag,
 .hljs-name,
 .hljs-attr {
-  color: #f92672;
+  color: #000;
 }
 .hljs-symbol,
 .hljs-attribute {
@@ -440,7 +450,7 @@ table tbody tr:nth-child(2n) {
 }
 .hljs-params,
 .hljs-class .hljs-title {
-  color: #f8f8f2;
+  color: #000;
 }
 .hljs-string,
 .hljs-type,
@@ -452,7 +462,7 @@ table tbody tr:nth-child(2n) {
 .hljs-addition,
 .hljs-variable,
 .hljs-template-variable {
-  color: #e6db74;
+  color: #000;
 }
 .hljs-comment,
 .hljs-deletion,
