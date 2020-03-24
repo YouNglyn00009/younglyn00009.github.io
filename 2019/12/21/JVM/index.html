@@ -92,7 +92,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-12-21</span>
-            <span class="time">10:44:16</span>
+            <span class="time">20:31:33</span>
           </span>
           
           <!--  Categories  -->
@@ -213,16 +213,45 @@
 <td>-XX:OnOutOfMemoryError</td>
 <td>当系统产生OOM时，执行一个指定的脚本，这个脚本可以是任意功能的。比如生成当前线程的dump文件，或者是发送邮件和重启系统。</td>
 </tr>
+<tr>
+<td>-XX:+UseSerialGC</td>
+<td>使用串行垃圾回收器</td>
+</tr>
+<tr>
+<td>-XX:+UseParNewGC</td>
+<td>使用PartNew垃圾回收器</td>
+</tr>
+<tr>
+<td>-XX:+UseConcMarkSweepGC</td>
+<td>使用CMS垃圾回收器，如果新生代没有配置垃圾回收器，会默认选择ParNew作为新生代的垃圾回收器</td>
+</tr>
+<tr>
+<td>-XX:ParallelGCThreads</td>
+<td>设置垃圾收集器的线程数量，不设置的情况下默认与CPU核心数一致</td>
+</tr>
+<tr>
+<td>-XX:MaxGCPauseMillis</td>
+<td>设置Parallel Scavenge垃圾收集器运行时业务线程停顿的最大时间（STW的时间）</td>
+</tr>
+<tr>
+<td>-XX:GCTimeRatio</td>
+<td>设置Parallel Scavenge垃圾收集器垃圾收集的时间占总时间的比例，该参数可以明确体现出CPU的吞吐量。</td>
+</tr>
+<tr>
+<td>-XX:+UseParallelOldGC</td>
+<td>指定老年代使用Parallel Old垃圾收集器</td>
+</tr>
+<tr>
+<td>-XX:+UseConcMarkSweepGC</td>
+<td>制定老年代使用CMS垃圾回收器</td>
+</tr>
 </tbody></table>
 <h2 id="五、垃圾回收"><a href="#五、垃圾回收" class="headerlink" title="五、垃圾回收"></a>五、垃圾回收</h2><h3 id="1、判断对象是否已死"><a href="#1、判断对象是否已死" class="headerlink" title="1、判断对象是否已死"></a>1、判断对象是否已死</h3><h4 id="1-1-引用计数法"><a href="#1-1-引用计数法" class="headerlink" title="1.1 引用计数法"></a>1.1 引用计数法</h4><p>对象会存一个引用计数器，每当有一个地方引用它，对象的计数器就+1，引用失效时，计数器-1；当计数器为0时，就代表对象不再被引用。<br><br><b>现在常用的JVM没有使用引用计数法，主要原因就是引用计数法无法解决对象的循环引用问题</b></p>
-<h4 id="1-2-可达性分析算法（JVM使用的）"><a href="#1-2-可达性分析算法（JVM使用的）" class="headerlink" title="1.2 可达性分析算法（JVM使用的）"></a>1.2 可达性分析算法（JVM使用的）</h4><ul>
-<li>GC Roots对象：<ul>
+<h4 id="1-2-可达性分析算法（JVM使用的）"><a href="#1-2-可达性分析算法（JVM使用的）" class="headerlink" title="1.2 可达性分析算法（JVM使用的）"></a>1.2 可达性分析算法（JVM使用的）</h4><h5 id="GC-Roots对象："><a href="#GC-Roots对象：" class="headerlink" title="GC Roots对象："></a>GC Roots对象：</h5><ul>
 <li>虚拟机栈(栈桢中的本地变量表)中的引用的对象</li>
 <li>方法区中的类静态属性引用的对象</li>
 <li>方法区中的常量引用的对象</li>
 <li>本地方法栈中（native方法）的引用的对象</li>
-</ul>
-</li>
 </ul>
 <p>可达性分析算法：通过一系列称为“GC Roots”的对象作为起始点，从这些节点开始向下搜索，当一个对象到GC Roots没有任何引用链连接时，说明该对象已死。</p>
 <h3 id="2、垃圾回收算法"><a href="#2、垃圾回收算法" class="headerlink" title="2、垃圾回收算法"></a>2、垃圾回收算法</h3><h4 id="2-1-标记-清除算法"><a href="#2-1-标记-清除算法" class="headerlink" title="2.1 标记-清除算法"></a>2.1 标记-清除算法</h4><p>分为标记和清除两个阶段，先标记出所有需要需要回收的对象，标记完成后统一回收所有被标记的对象。标记-清除算法的缺点：</p>
@@ -239,6 +268,82 @@
 <li>不会出现内存碎片，每次只操作一半区域。</li>
 </ul>
 <p><img src="/img/jvm/%E5%A4%8D%E5%88%B6%E7%AE%97%E6%B3%95.jpg" alt="复制算法"></p>
+<h3 id="3、垃圾回收器"><a href="#3、垃圾回收器" class="headerlink" title="3、垃圾回收器"></a>3、垃圾回收器</h3><table>
+<thead>
+<tr>
+<th><span style="white-space:nowrap;">种类</span></th>
+<th><span style="white-space:nowrap;">GC方式</span></th>
+<th><span style="white-space:nowrap;">使用算法</span></th>
+<th><span style="white-space:nowrap;">适用区域</span></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Serial</td>
+<td>串行</td>
+<td>复制</td>
+<td>新生代</td>
+<td>执行时会SWT</td>
+</tr>
+<tr>
+<td>Serial Old</td>
+<td>串行</td>
+<td>标记-整理</td>
+<td>老年代</td>
+<td>执行时会SWT</td>
+</tr>
+<tr>
+<td>ParNew</td>
+<td>并行</td>
+<td>复制</td>
+<td>新生代</td>
+<td>Serial的多线程版本，一般与老年代的CMS收集器公用，也会STW</td>
+</tr>
+<tr>
+<td>Parallel Scavenge</td>
+<td>并行</td>
+<td>复制</td>
+<td>新生代</td>
+<td>关注点为CPU吞吐量，吞吐量的计算方式：CPU执行代码的时间/（执行代码时间+垃圾收集时间），执行垃圾收集时会SWT</td>
+</tr>
+<tr>
+<td>Parallel Old</td>
+<td>并行</td>
+<td>标记-整理</td>
+<td>老年代</td>
+<td>Parallel Scavenge的老年代版本，STW</td>
+</tr>
+<tr>
+<td>CMS(Concurrent Mark Sweep)</td>
+<td>并行</td>
+<td>标记-清除</td>
+<td>老年代</td>
+<td>STW时间较短，需要内存较大，由于使用标记-清除算法（不整理），会产生内存碎片</td>
+</tr>
+<tr>
+<td>G1(Garbage-First)</td>
+<td>并行</td>
+<td>标记-整理+复制</td>
+<td>整个堆内存都可以使用</td>
+<td>其他垃圾回收器度需要两种一起配合使用，G1可以单独使用。</td>
+</tr>
+</tbody></table>
+<h4 id="G1垃圾回收器"><a href="#G1垃圾回收器" class="headerlink" title="G1垃圾回收器"></a>G1垃圾回收器</h4><h5 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h5><ul>
+<li><p>其他垃圾回收器需要两种回收器一起配合使用，而单独使用G1回收器，就可以回收堆内存垃圾。</p>
+</li>
+<li><p>G1回收器将堆内存分为大小相同的独立区域（Region）</p>
+</li>
+<li><p>虽然新生代和老年代的概念还保留，但是他们两个不再进行物理上的划分，而是存在不同的Region中，这些Region可以是不连续的。</p>
+</li>
+<li><p>G1回收器在执行时可以预估系统停止运行的时间：G1会根据收集出的每个Region中垃圾的大小生成一个列表，优先回收价值大的Region，这也是G1名字的由来。</p>
+</li>
+</ul>
+<h5 id="G1垃圾回收器的回收过程"><a href="#G1垃圾回收器的回收过程" class="headerlink" title="G1垃圾回收器的回收过程"></a>G1垃圾回收器的回收过程</h5><ol>
+<li><strong>初始标记</strong>：只标记GC Root直接关联的对象，这个过程需要STW；</li>
+<li><strong>并发标记</strong>：根据初始标记获得的存活对象继续向下查找标记（可达性分析），标记出所有存活的对象。这个阶段会与用户线程并行，虽然时间长，但是不会影响用户线程，缺点是不能标记出所有的对象，因为在这同时，用户线程会产生新的对象。</li>
+<li><strong>最终标记</strong>：这时候需要STW，标记出并发标记过程中，用户线程继续运行而产生的新对象。</li>
+<li><strong>并发清理</strong>：将所有Region的回收价值进行排序，按配置的停顿时间制定一个回收计划，根据回收计划进行回收。Region垃圾的回收使用复制算法，将一个Region中存活下来的对象复制到一个空的Region中，删除原来的Region。</li>
+</ol>
 
         </div>
       </div>
